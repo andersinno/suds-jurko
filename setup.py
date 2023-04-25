@@ -575,27 +575,6 @@ if sys.version_info >= (2, 5):
 
 
 # -----------------------------------------------------------------------------
-# Integrate py2to3 into our build operation.
-# -----------------------------------------------------------------------------
-
-if sys.version_info >= (3,):
-    # Integrate the py2to3 step into our build.
-    if using_setuptools:
-        extra_setup_params["use_2to3"] = True
-    else:
-        from distutils.command.build_py import build_py_2to3
-        distutils_cmdclass["build_py"] = build_py_2to3
-
-    # Teach Python's urllib lib2to3 fixer that the old urllib2.__version__ data
-    # member is now stored in the urllib.request module.
-    import lib2to3.fixes.fix_urllib
-    for x in lib2to3.fixes.fix_urllib.MAPPING["urllib2"]:
-        if x[0] == "urllib.request":
-            x[1].append("__version__")
-            break
-
-
-# -----------------------------------------------------------------------------
 # Avoid setup warnings when constructing a list of all project sources.
 # -----------------------------------------------------------------------------
 # Part of this workaround implemented and part in the project's MANIFEST.in
